@@ -62,12 +62,12 @@ const main = async () => {
 
             }
             const taskData = pollRes.data.filter( info => info.task_id === taskId )[0];
-            if (taskData.succeeded != null) {
-                console.log(`task succeeded at ${taskData.succeeded}`);
+            if (taskData.timestamps.succeeded != null) {
+                console.log(`task succeeded at ${taskData.timestamps.succeeded}`);
                 break;
             }
-            if (taskData.failed != null) {
-                console.log(`task failed at ${taskData.failed}`);
+            if (taskData.timestamps.failed != null) {
+                console.log(`task failed at ${taskData.timestamps.failed}`);
                 console.log(`errors: ${pollRes.errors}`);
                 console.log(`messages: ${pollRes.messages}`);
                 // noinspection ExceptionCaughtLocallyJS
