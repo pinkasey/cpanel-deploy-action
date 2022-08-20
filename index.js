@@ -27,8 +27,8 @@ const main = async () => {
             },
             headers: {"Authorization": `cpanel ${cpanel_username}:${cpanel_token}`}
         });
-        console.log(`updateRes: ${JSON.stringify(updateRes, null, 2)}`);
         updateRes = updateRes.data;
+        console.log(`updateRes: ${JSON.stringify(updateRes, null, 2)}`);
         if (updateRes.errors !== null) {
             // noinspection ExceptionCaughtLocallyJS
             throw new Error(updateRes.errors);
@@ -40,8 +40,8 @@ const main = async () => {
             },
             headers: {"Authorization": `cpanel ${cpanel_username}:${cpanel_token}`}
         });
-        console.log(`startDeployRes: ${startDeployRes}`);
         startDeployRes = startDeployRes.data;
+        console.log(`startDeployRes: ${JSON.stringify(startDeployRes, null, 2)}`);
         if (startDeployRes.errors !== null) {
             // noinspection ExceptionCaughtLocallyJS
             throw new Error("Failed to start deployment task: " + JSON.stringify(startDeployRes.errors, null, 2));
@@ -74,7 +74,7 @@ const main = async () => {
                 throw new Error(`Task failed to deploy. errors: ${pollRes.errors}`);
             }
             //not failed nor success - wait
-            console.log(`task ${taskId} still running. taskData: ${taskData}`);
+            console.log(`task ${taskId} still running. taskData: ${JSON.stringify(taskData, null, 2)}`);
             await new Promise(r => setTimeout(r, 1000));
         }
         
