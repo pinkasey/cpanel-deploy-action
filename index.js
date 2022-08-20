@@ -26,7 +26,7 @@ const main = async () => {
             },
             headers: {"Authorization": `cpanel ${cpanel_username}:${cpanel_token}`}
         });
-        console.log(`updateRes: ${updateRes}`);
+        console.log(`updateRes: ${JSON.stringify(updateRes, null, 2)}`);
         updateRes = updateRes.data;
         if (updateRes.errors !== null) {
             // noinspection ExceptionCaughtLocallyJS
@@ -43,7 +43,7 @@ const main = async () => {
         startDeployRes = startDeployRes.data;
         if (startDeployRes.errors !== null) {
             // noinspection ExceptionCaughtLocallyJS
-            throw new Error("Failed to start deployment task: " + JSON.stringify(startDeployRes.errors));
+            throw new Error("Failed to start deployment task: " + JSON.stringify(startDeployRes.errors, null, 2));
         }
         const taskId = startDeployRes.task_id;
         if (!taskId) {
@@ -72,6 +72,9 @@ const main = async () => {
                 // noinspection ExceptionCaughtLocallyJS
                 throw new Error(`Task failed to deploy. errors: ${pollRes.errors}`);
             }
+            //not failed nor success - wait
+            console.log(`task ${taskId} still running. taskData: ${taskData}`);
+            await new Promise(r => setTimeout(r, 1000));
         }
         
         const duration = new Date() - timeStart;
