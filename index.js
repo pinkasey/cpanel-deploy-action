@@ -46,7 +46,7 @@ const main = async () => {
             // noinspection ExceptionCaughtLocallyJS
             throw new Error("Failed to start deployment task: " + JSON.stringify(startDeployRes.errors, null, 2));
         }
-        const taskId = startDeployRes.task_id;
+        const taskId = startDeployRes.data.task_id;
         if (!taskId) {
             // noinspection ExceptionCaughtLocallyJS
             throw new Error("Failed to start deployment task - task_id = " + taskId);
