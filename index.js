@@ -19,7 +19,7 @@ const main = async () => {
         const createDeploymentTaskEndpoint = baseUrl + "/VersionControlDeployment/create";
         const getDeploymentStatusEndpoint = baseUrl + "/VersionControlDeployment/retrieve";
 
-        let updateRes = axios.get(updateRepoEndpoint, {
+        let updateRes = await axios.get(updateRepoEndpoint, {
             params: {
                 repository_root,
                 branch,
@@ -33,7 +33,7 @@ const main = async () => {
             throw new Error(updateRes.errors);
         }
 
-        let startDeployRes = axios.get(createDeploymentTaskEndpoint, {
+        let startDeployRes = await axios.get(createDeploymentTaskEndpoint, {
             params: {
                 repository_root,
             },
@@ -53,7 +53,7 @@ const main = async () => {
 
         for (let i=0; i<maxWaitSeconds; i++) {
             console.log(`polling iteration ${i}`);
-            let pollRes = axios.get(getDeploymentStatusEndpoint, {
+            let pollRes = await axios.get(getDeploymentStatusEndpoint, {
                 headers: {"Authorization": `cpanel ${cpanel_username}:${cpanel_token}`}
             });
             pollRes = pollRes.data;
