@@ -13,13 +13,14 @@ const main = async () => {
         const cpanel_token = core.getInput('cpanel_token', {required: true});
         const cpanel_username = core.getInput('cpanel_username', {required: true});
 
-        const baseUrl = `${hostname}:${port}:/execute`;
+        const baseUrl = `${hostname}:${port}/execute`;
         console.log(`baseUrl: '${baseUrl}'`);
         const updateRepoEndpoint = baseUrl + "/VersionControl/update";
         const createDeploymentTaskEndpoint = baseUrl + "/VersionControlDeployment/create";
         const getDeploymentStatusEndpoint = baseUrl + "/VersionControlDeployment/retrieve";
 
         let updateRes = await axios.get(updateRepoEndpoint, {
+            port: port,
             params: {
                 repository_root,
                 branch,
