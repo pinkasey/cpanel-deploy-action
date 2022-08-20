@@ -82,9 +82,12 @@ const main = async () => {
         console.log(`deployment duration: ${duration}`);
     } catch (error) {
         const duration = new Date() - timeStart;
+        const errorBody = error.response?.data;
         console.log(`failed deployment duration: ${duration}`);
+        console.log(`errorBody: ${errorBody}`);
         core.setOutput("duration", duration);
-        core.setFailed(error.message);
+
+        core.setFailed(error.message + (errorBody == null ? "" : `\n${errorBody}` ));
     }
 };
 
