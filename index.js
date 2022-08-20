@@ -14,7 +14,7 @@ const main = async () => {
         const cpanel_username = core.getInput('cpanel_username', {required: true});
 
         const baseUrl = `${hostname}:${port}/execute`;
-        console.log(`baseUrl: '${baseUrl}'`);
+        core.info(`baseUrl: '${baseUrl}'`);
         const updateRepoEndpoint = baseUrl + "/VersionControl/update";
         const createDeploymentTaskEndpoint = baseUrl + "/VersionControlDeployment/create";
         const getDeploymentStatusEndpoint = baseUrl + "/VersionControlDeployment/retrieve";
@@ -28,7 +28,7 @@ const main = async () => {
             headers: {"Authorization": `cpanel ${cpanel_username}:${cpanel_token}`}
         });
         updateRes = updateRes.data;
-        console.log(`updateRes: ${JSON.stringify(updateRes, null, 2)}`);
+        core.debug(`updateRes: ${JSON.stringify(updateRes, null, 2)}`);
         if (updateRes.errors !== null) {
             // noinspection ExceptionCaughtLocallyJS
             throw new Error(updateRes.errors);
@@ -41,7 +41,7 @@ const main = async () => {
             headers: {"Authorization": `cpanel ${cpanel_username}:${cpanel_token}`}
         });
         startDeployRes = startDeployRes.data;
-        console.log(`startDeployRes: ${JSON.stringify(startDeployRes, null, 2)}`);
+        core.debug(`startDeployRes: ${JSON.stringify(startDeployRes, null, 2)}`);
         if (startDeployRes.errors !== null) {
             // noinspection ExceptionCaughtLocallyJS
             throw new Error("Failed to start deployment task: " + JSON.stringify(startDeployRes.errors, null, 2));
@@ -53,7 +53,7 @@ const main = async () => {
         }
 
         for (let i=0; i<maxWaitSeconds; i++) {
-            console.log(`polling iteration ${i}`);
+            core.info(`polling iteration ${i}`);
             let pollRes = await axios.get(getDeploymentStatusEndpoint, {
                 headers: {"Authorization": `cpanel ${cpanel_username}:${cpanel_token}`}
             });
@@ -63,29 +63,29 @@ const main = async () => {
             }
             const taskData = pollRes.data.filter( info => info.task_id === taskId )[0];
             if (taskData.timestamps.succeeded != null) {
-                console.log(`task succeeded at ${taskData.timestamps.succeeded}`);
+                core.info(`task succeeded at ${taskData.timestamps.succeeded}`);
                 break;
             }
             if (taskData.timestamps.failed != null) {
-                console.log(`task failed at ${taskData.timestamps.failed}`);
-                console.log(`errors: ${pollRes.errors}`);
-                console.log(`messages: ${pollRes.messages}`);
+                core.info(`task failed at ${taskData.timestamps.failed}`);
+                core.info(`errors: ${pollRes.errors}`);
+                core.info(`messages: ${pollRes.messages}`);
                 // noinspection ExceptionCaughtLocallyJS
                 throw new Error(`Task failed to deploy. errors: ${pollRes.errors}`);
             }
             //not failed nor success - wait
-            console.log(`task ${taskId} still running. taskData: ${JSON.stringify(taskData, null, 2)}`);
+            core.debug(`task ${taskId} still running. taskData: ${JSON.stringify(taskData, null, 2)}`);
             await new Promise(r => setTimeout(r, 1000));
         }
         
         const duration = new Date() - timeStart;
         core.setOutput("duration", duration);
-        console.log(`deployment duration: ${duration}`);
+        core.info(`deployment duration: ${duration}`);
     } catch (error) {
         const duration = new Date() - timeStart;
         const errorBody = error.response?.data;
-        console.log(`failed deployment duration: ${duration}`);
-        console.log(`errorBody: ${errorBody}`);
+        core.info(`failed deployment duration: ${duration}`);
+        core.debug(`errorBody: ${errorBody}`);
         core.setOutput("duration", duration);
 
         core.setFailed(error.message + (errorBody == null ? "" : `\n${errorBody}` ));
