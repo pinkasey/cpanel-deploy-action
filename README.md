@@ -30,7 +30,7 @@ cPanel username used for API calls. Must be the same username used to create the
 **Required** branch to deploy. e.g: 'main' or 'master', or any other branch. Default: `main`
 
 
-#Outputs
+## Outputs
 
 ### `duration`
 Duration of deployment, in milliseconds

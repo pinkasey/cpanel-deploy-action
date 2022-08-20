@@ -70,6 +70,7 @@ const main = async () => {
                 core.info(`task failed at ${taskData.timestamps.failed}`);
                 core.info(`errors: ${pollRes.errors}`);
                 core.info(`messages: ${pollRes.messages}`);
+                core.debug(`latest poll result: ${pollRes}`);
                 // noinspection ExceptionCaughtLocallyJS
                 throw new Error(`Task failed to deploy. errors: ${pollRes.errors}`);
             }
