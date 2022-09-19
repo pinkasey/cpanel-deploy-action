@@ -1,5 +1,5 @@
 # cpanel-deploy-action
-This actinos deploys a site to cPanel using the cPanel API,
+This action deploys a site to cPanel using the cPanel API,
 by taking the following steps:
 1. Tell cPanel to pull the branch
 2. Tell cPanel to deploy the branch
