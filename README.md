@@ -26,8 +26,11 @@ cPanel username used for API calls. Must be the same username used to create the
 ### `repository_root`
 **Required** folder in which the repository is installed in the target cPanel account. must already exist. e.g: /home/your_account/repositories/your_repository
 
+### `updateRepository`
+**Required** Whether or not to update the repository before triggering the deployment. If true - parameter 'branch' is required. defaults to `true`.
+
 ### `branch`
-**Required** branch to deploy. e.g: 'main' or 'master', or any other branch. Default: `main`
+**Required** if `updateRepository` is `true`: branch to deploy. e.g: 'main' or 'master', or any other branch. Default: `main`
 
 
 ## Outputs

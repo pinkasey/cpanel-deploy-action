@@ -17,16 +17,20 @@ inputs:
   repository_root:
     description: "folder in which the repository is installed in the target cPanel account. must already exist. e.g: /home/your_account/repositories/your_repository"
     required: true
-  branch:
-    description: "branch to deploy. e.g: 'main' or 'master', or any other brnach"
+  updateRepository:
+    description: "Whether or not to update the repository before triggering the deployment. If true - parameter 'branch' is required. defaults to 'true'."
     required: true
+    default: 'true'
+  branch:
+    description: "branch to deploy. e.g: 'main' or 'master', or any other branch"
+    required: false
     default: 'main'
 outputs:
   duration:
     description: 'Duration of deployment, in milliseconds'
 runs:
   using: 'node16'
-  main: 'index.js'
+  main: 'dist/index.js'
 branding:
   icon: arrow-up-right
   color: orange
