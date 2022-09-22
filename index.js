@@ -9,7 +9,7 @@ const main = async () => {
         const hostname = core.getInput('hostname', {required: true});
         const port = core.getInput('cPanelApiPort', {required: true});
         const repository_root = core.getInput('repository_root', {required: true});
-        const updateRepository = core.getInput('updateRepository', {required: true});
+        const updateRepository = core.getBooleanInput('updateRepository', {required: true});
         const cpanel_token = core.getInput('cpanel_token', {required: true});
         const cpanel_username = core.getInput('cpanel_username', {required: true});
 
