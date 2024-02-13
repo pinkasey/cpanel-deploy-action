@@ -1,6 +1,6 @@
 {
   "name": "cpanel-deploy-action",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "deploy to cPanel using cPanel API and git",
   "main": "index.js",
   "scripts": {
