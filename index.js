@@ -49,7 +49,7 @@ const main = async () => {
             // noinspection ExceptionCaughtLocallyJS
             throw new Error("Failed to start deployment task: " + JSON.stringify(startDeployRes.errors, null, 2));
         }
-        const taskId = startDeployRes.data.task_id;
+        const taskId = startDeployRes.task_id;
         if (!taskId) {
             // noinspection ExceptionCaughtLocallyJS
             throw new Error("Failed to start deployment task - task_id = " + taskId);
@@ -65,6 +65,11 @@ const main = async () => {
 
             }
             const taskData = pollRes.data.filter( info => info.task_id === taskId )[0];
+            if (!taskData) {
+                core.debug(`task ${taskId} not found in poll results`);
+                await new Promise(r => setTimeout(r, 1000));
+                continue;
+            }
             if (taskData.timestamps.succeeded != null) {
                 core.info(`task succeeded at ${taskData.timestamps.succeeded}`);
                 break;
